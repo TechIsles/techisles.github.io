@@ -23,10 +23,10 @@
     <script src="js/fetch.min.js"></script>
     <script src="js/axios.min.js"></script>
     <script src="js/parallax.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/flotext.css">
+    <link rel="stylesheet" href="css/flotext.css" media="print" onload="this.media='all'">
     <script src="js/flotext.js"></script>
     <link rel="stylesheet" type="text/css" href="./css/loading.css"> 
-    <link rel="stylesheet" href="css/tab.css">
+    <link rel="stylesheet" href="css/tab.css" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="css/AD.css">
     <!--  <link rel="stylesheet" href="css/Text.css">-->
     <link rel="stylesheet" href="css/rss.css">
@@ -77,26 +77,15 @@
         }
 
         async function loadScriptBasedOnDetection() {
-            const isLagging = await detectPageLag();
-            const hasAcceleration = hasWebGL();
-
-            if (isLagging || !hasAcceleration) {
-                // 卡顿或无图形加速
-                const script = document.createElement('script');
-                script.src = 'js/lowmain.js';
-                script.async = true; // 确保异步加载
-                document.head.appendChild(script);
-            } else {
-                // 无卡顿且有图形加速
-                const script = document.createElement('script');
-                script.src = 'js/main.js';
-                script.async = true; // 确保异步加载
-                document.head.appendChild(script);
-            }
-        }
-
-        // 立即执行检测
-        loadScriptBasedOnDetection();
+    // 简化检测逻辑，避免长时间阻塞
+    const hasAcceleration = hasWebGL();
+    const script = document.createElement('script');
+    script.src = hasAcceleration ? 'js/main.js' : 'js/lowmain.js';
+    script.async = true;
+    document.head.appendChild(script);
+}
+// 立即执行检测
+loadScriptBasedOnDetection();
     </script>
 </head>
 <body>
@@ -169,44 +158,37 @@
     <div id="spinner-container">
         <div class="spinner"></div>
     </div>
-    <!-- 弹窗信息提醒代码开始 -->
-    <script>
-    window.addEventListener('load', function() {
-        var currentTime = new Date().getHours();
-        var greeting;
-        if (currentTime < 5) {
-            greeting = "凌晨好！";
-        } else if (currentTime < 8) {
-            greeting = "早上好！";
-        } else if (currentTime < 11) {
-            greeting = "上午好！";
-        } else if (currentTime < 13) {
-            greeting = "中午好！";
-        } else if (currentTime < 18) {
-            greeting = "下午好！";
-        } else if (currentTime < 19) {
-            greeting = "傍晚好！";
-        } else if (currentTime < 24) {
-            greeting = "晚上好！";
-        }
-     
-		layer.msg(greeting + "👏欢迎你的访问！");
-    });
-    </script>
-    <!-- 弹窗信息提醒代码结束 -->
      <!-- 底层背景 -->
     <div id="low-bg"></div>
     <!-- 添加Service Worker -->
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
-                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                }).catch(function(error) {
-                    console.log('ServiceWorker registration failed: ', error);
-                });
+     // 延迟注册Service Worker
+    if ('serviceWorker' in navigator) {
+    setTimeout(function() {
+        navigator.serviceWorker.register('service-worker.js', {
+            scope: '/',
+            updateViaCache: 'none'
+        }).catch(console.error);
+    }, 2000);
+}
+        // 延迟到页面加载完成后再注册 Service Worker
+        /*if ('serviceWorker' in navigator) {
+          window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+              registration.onupdatefound = function() {
+                var installingWorker = registration.installing;
+                installingWorker.onstatechange = function() {
+                  if (installingWorker.state === 'installed') {
+                    if (navigator.serviceWorker.controller) {
+                      // 有新内容，自动刷新页面
+                      window.location.reload();
+                    }
+                  }
+                };
+              };
             });
-        }
+          });
+        }*/
     </script>
     <div class="node" id="node"></div>
     <div class="cursor" id="cursor"></div>
@@ -277,7 +259,7 @@
                     </div>
                 </a>
                <!-- 弹出效果 -->
-               <a href="#" onclick="showImage2()">
+               <a href="javascript:void(0)" style="color: white; text-decoration: none;" onclick="showImage2(); return false;">
                 <div class="item" style="--color:rgba(0, 102, 255,0.3)">
                     <div class="bg" style="background-color:rgb(0, 102, 255)"></div>
                     <div class="inner"> <i class="fa-brands fa-weixin"></i><span>公众号</span></div>
@@ -303,7 +285,7 @@
                     </div>
                 </a>
                 <!-- 弹出效果 -->
-                <a href="#" onclick="showImage1()">
+                <a href="javascript:void(0)" style="color: white; text-decoration: none;" onclick="showImage1(); return false;">
                     <div class="item" style="--color:rgba(35, 45, 55,0.3)">
                         <div class="bg" style="background-color: rgb(43, 41, 41);"></div>
                         <div class="inner"> <i class="fa-brands fa-weixin"></i><span>微信号</span></div>
@@ -701,7 +683,74 @@
                         <p>本站已运行: <span id="days"></span></p>
                         <p> ღゝ◡╹ノ♡ <a href="https://www.noisework.cn">Noise主页</a></p>
                     </div>
-                    <!--向下滑动监听-->
+                     <!-- 说说卡片 -->   
+                     <link rel="stylesheet" href="./css/card-styles.css">                 
+                     <link rel="stylesheet" href="./css/expand-card.css">
+                     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+                     <script src="https://unpkg.com/medium-zoom/dist/medium-zoom.min.js"></script>
+                     <!-- 预加载关键资源 -->
+                     <link rel="preload" href="./js/note.js" as="script">
+                     <link rel="preload" href="./css/card-styles.css" as="style">
+                     <div id="note-expand-card" class="expand-card-container delayed-slide-in">
+                        <div class="expand-card-stack float-animate" id="expand-card-stack" ondblclick="hideCardPermanently()">
+                            <div class="expand-card park-sec park-sec1">
+                                <div class="park-inside">
+                                    <a class="avatar-link" id="expand-avatar" title="查看说说">
+                                        <img src="https://s2.loli.net/2025/03/24/HnSXKvibAQlosIW.png" alt="">
+                                    </a>
+                                    <div class="content-sec">
+                                        <a href="https://note.noisework.cn/" target="_blank" class="note-title-link">
+                                            <h2 style="margin-bottom: 2px; font-size: 16px;">「说说笔记」</h2>
+                                        </a>
+                                        <span id="typewriter-text">右侧展开查看，双击可关闭卡片</span>
+                                    </div>
+                                </div>
+                                <span class="date" id="expand-toggle-btn">展开 <span class="expand-arrow">▼</span></span>
+                            </div>
+                            <div class="expand-card park-sec park-sec2"></div>
+                            <div class="expand-card park-sec park-sec3"></div>
+                        </div>
+                         <div id="expand-content" style="display:none;">
+                             <div id="note">
+                                 <div class="note-header">
+                                     <div class="search-container">
+                                         <input type="text" id="tag-search" placeholder="搜索标签 #..." />
+                                         <button id="search-btn" target="_self">搜索</button>
+                                     </div>
+                                 </div>
+                                 <div class="note-container">
+                                     <div class="loading-wrapper">加载中...</div>
+                                 </div>
+                             </div>                        
+                         <div class="expand-bottom-divider"></div>
+                     </div>
+                     <!-- 确保所有脚本在内容加载后执行 -->
+                     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+                     <script src="./js/expand-card.js"></script>
+                     <script src="./js/jquery-3.2.1.js"></script>
+                     <script>
+                         window.note = {
+                             host: 'https://note.noisework.cn',
+                             limit: '10',
+                             domId: '#note',
+                             sourceName: '「说说笔记」',
+                             loadingTimeout: 10000  // 添加加载超时时间配置
+                         };
+                         // 添加加载超时处理
+                         setTimeout(() => {
+                             const loadingWrapper = document.querySelector('.loading-wrapper');
+                             if (loadingWrapper && loadingWrapper.style.display !== 'none') {
+                                 loadingWrapper.textContent = '加载失败，请刷新重试';
+                             }
+                         }, window.note.loadingTimeout);
+                         
+                         marked.setOptions({
+                             breaks: true,
+                             gfm: true,
+                         }); 
+                     </script>
+                     <script src="./js/note.js"></script>
+                <!--向下滑动监听-->
                     <script>
                         window.addEventListener('DOMContentLoaded', (event) => {
                     var scrollDown = document.querySelector('.scroll-down');
@@ -821,5 +870,37 @@
           document.head.appendChild(script);
         }
       </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+      <script>
+      function gzipCompress(data) {
+          const compressed = pako.gzip(JSON.stringify(data));
+          return btoa(String.fromCharCode.apply(null, compressed));
+      }
+      </script>
 </body>
+ <!-- 弹窗信息提醒代码开始 -->
+ <script>
+    window.addEventListener('load', function() {
+        var currentTime = new Date().getHours();
+        var greeting;
+        if (currentTime < 5) {
+            greeting = "凌晨好！";
+        } else if (currentTime < 8) {
+            greeting = "早上好！";
+        } else if (currentTime < 11) {
+            greeting = "上午好！";
+        } else if (currentTime < 13) {
+            greeting = "中午好！";
+        } else if (currentTime < 18) {
+            greeting = "下午好！";
+        } else if (currentTime < 19) {
+            greeting = "傍晚好！";
+        } else if (currentTime < 24) {
+            greeting = "晚上好！";
+        }
+     
+		layer.msg(greeting + "👏欢迎你的访问！");
+    });
+    </script>
+    <!-- 弹窗信息提醒代码结束 -->
 </html>
