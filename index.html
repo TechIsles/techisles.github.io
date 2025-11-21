@@ -36,14 +36,6 @@
     <link rel="stylesheet" href="./css/waline.css">
     <link rel="stylesheet" href="./css/friendlink.css">
     <link rel="stylesheet" href="./css/hotindex.css"> 
-    <!-- 引入Petercat-AI助手">-->
-        <script src="https://cdn.jsdelivr.net/npm/react/umd/react.development.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.development.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/dayjs/dayjs.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/antd/dist/antd.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/lottie-web/build/player/lottie.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@petercatai/assistant@1.0.7/dist/umd/assistant.min.js"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@petercatai/assistant@1.0.7/dist/umd/assistant.min.css">    
     <!--根据设备性能自动切换main.js-->  
     <script>
         // 检测页面卡顿
@@ -261,15 +253,15 @@ loadScriptBasedOnDetection();
                <!-- 弹出效果 -->
                <a href="javascript:void(0)" style="color: white; text-decoration: none;" onclick="showImage2(); return false;">
                 <div class="item" style="--color:rgba(0, 102, 255,0.3)">
-                    <div class="bg" style="background-color:rgb(0, 102, 255)"></div>
+                    <div class="bg" style="background-color:rgb(21, 211, 201)"></div>
                     <div class="inner"> <i class="fa-brands fa-weixin"></i><span>公众号</span></div>
                 </div>
             </a>
                </a>
-                <a href="https://noise.zhubai.love"target="_blank">
+                <a href="https://memory.noisework.cn"target="_blank">
                     <div class="item" style="--color:rgba(35, 45, 55,0.3)">
-                        <div class="bg" style="background-color: rgb(1, 193, 157);"></div>
-                        <div class="inner"><i class="fa-solid fa-square-envelope"></i><span>竹白</span></div>
+                        <div class="bg" style="background-color: rgb(0, 126, 216);"></div>
+                        <div class="inner"><i class="fa-solid fa-image"></i><span>相册图册</span></div>
                     </div>
                 </a>
                 <a href="https://tg.noisework.cn" target="_blank">
@@ -293,7 +285,7 @@ loadScriptBasedOnDetection();
                 </a>
                 <a href="https://sspai.com/u/noise/updates" target="_blank">
                     <div class="item" style="--color:rgba(28, 64, 100)">
-                        <div class="bg" style="background-color:rgb(220, 92, 122)"></div>
+                        <div class="bg" style="background-color:rgb(220, 92, 137)"></div>
                         <div class="inner"><i class="fa-solid fa-user-astronaut"></i><span>少数派</span></div>
                     </div>
                 </a>    
@@ -853,15 +845,6 @@ loadScriptBasedOnDetection();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
     <script src="js/hotindex.js"></script>
     <script src="js/clock.js"></script>
-   <!-- 引入Petercat-AI助手">-->
-    <script>
-        PetercatLUI.initAssistant({
-          apiDomain: 'https://api.petercat.ai',
-          token: '4f300a6a-59d5-4f35-a242-47cf3a90dc23',
-          starters: ['我该怎样快速上手', '如何配置留言'],
-          clearMessage: true
-        });
-     </script>
      <script>
         if (!/Android|webOS|iPhone|iPod|BlackBerry|iPad|Windows Phone/i.test(navigator.userAgent)) {
           var script = document.createElement('script');
